@@ -5,6 +5,7 @@
 import express from 'express';
 
 const getContacts =(req,res)=>{
+    
     res.status(200).json({
         message: "List of contacts will be displayed here",
         
@@ -26,6 +27,13 @@ const getContactsByID=(req,res)=>{
 // route POST /api/contacts/
 
 const postContact=(req,res)=>{
+    const {name,email,phone,designation} = req.body;
+if (!name || !email || !phone || !designation) {
+    const error = new Error("Please provide all the required fields: name, email, phone, designation");
+    error.statusCode = 400;
+    throw error;
+}
+
     res.status(200).json({
         message: "Post a Contact",
         

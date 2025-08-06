@@ -8,6 +8,14 @@ dotenv.config(
    { path: './.env'}
 );
 
+// middleware built-in
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// error handler middleware
+import errorHandler from './middleware/errorHandler.js';
+app.use(errorHandler);
+
 // routes
 import contactRoutes from './routes/contactRoutes.js';
 app.use('/api/contacts', contactRoutes);
