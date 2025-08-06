@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 const app = express();
+import connectDB from './connection/dbConnection.js';
 
 
 // dotenv configuration
@@ -20,6 +21,8 @@ app.use(errorHandler);
 import contactRoutes from './routes/contactRoutes.js';
 app.use('/api/contacts', contactRoutes);
 
+// db connection
+connectDB();
 
 
 const port = process.env.POR || 8000;
