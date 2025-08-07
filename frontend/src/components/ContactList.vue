@@ -20,7 +20,9 @@
                     <td>{{ contact.phone }} </td>
                     <td>{{ contact.designation }} </td>
                     <td >
-                        <router-link to="/contact/" class="mx-1 btn btn-primary btn-sm mr-4" >Edit</router-link>
+                    <router-link :to="{ name: 'EditContact', params: { id: contact._id } }"  class="mx-1 btn btn-primary btn-sm mr-4">
+                        Edit
+                    </router-link>
                         <button class="mx-1 btn btn-danger btn-sm ">Delete</button>
                     </td>
                 </tr>
