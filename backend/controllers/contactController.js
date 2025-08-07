@@ -9,8 +9,7 @@ import express from 'express';
 const getContacts = asyncHandler( async(req,res)=>{
     const contacts = await Contact.find();
     res.status(200).json({
-        message: "Get All Contacts",
-        contacts: contacts,
+     contacts,
     });
 })
 
@@ -25,7 +24,6 @@ const getContactsByID=  asyncHandler( async (req,res)=>{
     throw new Error("Contact not found")
    }
    res.status(200).json({
-   "message" : `Contact found`,
    contact
    })
 

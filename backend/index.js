@@ -1,13 +1,19 @@
 import express from 'express';
 import dotenv from 'dotenv';
-const app = express();
+import cors from "cors"
 import connectDB from './connection/dbConnection.js';
 
+
+// app instance
+const app = express();
 
 // dotenv configuration
 dotenv.config(
    { path: './.env'}
 );
+
+// cors setting
+app.use(cors())
 
 // middleware built-in
 app.use(express.json());
