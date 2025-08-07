@@ -3,7 +3,6 @@
     <div v-if="loading" class="loader-container">
   <ClipLoader :loading="loading" color="#000" size="50px" />
 </div>
-
         <table class="table table-hover">
             <thead>
                 <tr>
