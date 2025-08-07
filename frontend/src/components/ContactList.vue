@@ -23,7 +23,7 @@
                     <router-link :to="{ name: 'EditContact', params: { id: contact._id } }"  class="mx-1 btn btn-primary btn-sm mr-4">
                         Edit
                     </router-link>
-                        <button class="mx-1 btn btn-danger btn-sm ">Delete</button>
+                        <button class="mx-1 btn btn-danger btn-sm" @click="deleteContact(contact._id)">Delete</button>
                     </td>
                 </tr>
             </tbody>
@@ -35,12 +35,15 @@ import axios from 'axios';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'; 
+import { useToast } from 'vue-toastification';
 
 
-const contacts = ref([])
-const loading = ref(true)
-
+const contacts = ref([]);
+const loading = ref(true);
+const toast = useToast();
 const apiURL = 'http://localhost:8000/api/contacts'
+
+
 const getContacts =  async() =>{
     try {
         const response = await axios.get(apiURL);
@@ -51,8 +54,25 @@ const getContacts =  async() =>{
     } finally{
         loading.value = false;
     }
-}
+};
 
+
+const deleteContact = async(id) => {
+    try {
+        // console.log(id )
+       const url = `http://localhost:8000/api/contacts/${id}`
+        if(confirm('Are you sure you want to delete the contact?')){
+         const response = await axios.delete(url);
+        //  console.log(response);
+         if(response.status == 200){
+            toast.success('Contact deleted successfully');
+            getContacts();
+         }   
+        }
+    } catch (err) {
+        console.log(err)
+    }
+}
 onMounted(()=>{
     // console.log("component mounted")
     getContacts()
