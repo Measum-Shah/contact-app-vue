@@ -1,86 +1,151 @@
 <template lang="html">
-    <div>
-        <div class="container main">
-            <h1 class="heading">Add a New Contact</h1>
-            <div class="row">
-                <div class="col-md-6">
-                    <form  @submit.prevent="saveContact">
-                        <div class="form-group">
-                            <label class="label">Name</label>
-                            <input type="text" class="form-control" placeholder="Enter Name" v-model="contact.name">
-                        </div>
-                        <div class="form-group">
-                            <label class="label"> Email</label>
-                            <input type="email" class="form-control" placeholder="Enter Email" v-model="contact.email">
-                        </div>
-                        <div class="form-group">
-                            <label class="label">Phone</label>
-                            <input type="text" class="form-control" placeholder="Enter Phone" v-model="contact.phone">
-                        </div>
-                        <div class="form-group">
-                            <label class="label">Designation</label>
-                            <input type="text" class="form-control" placeholder="Enter Designation" v-model="contact.designation">
-                        </div>
+  <div class="container main my-4">
+    <!-- Page Heading -->
+    <h1 class="heading mb-3">Add a New Contact</h1>
 
-                        <button type="submit" class="btn btn-dark btn-sm mt-2">Submit</button>
-                    </form>
-                </div>
-            </div>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form @submit.prevent="saveContact" class="contact-form">
 
-        </div>
+          <!-- Name Field -->
+          <div class="form-group">
+            <label class="label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter Name"
+              v-model="contact.name"
+            />
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <label class="label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Enter Email"
+              v-model="contact.email"
+            />
+          </div>
+
+          <!-- Phone Field -->
+          <div class="form-group">
+            <label class="label">Phone</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter Phone"
+              v-model="contact.phone"
+            />
+          </div>
+
+          <!-- Designation Field -->
+          <div class="form-group">
+            <label class="label">Designation</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter Designation"
+              v-model="contact.designation"
+            />
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-dark btn-sm mt-3 w-100 submit-btn">
+            Add Contact
+          </button>
+
+        </form>
+      </div>
     </div>
+  </div>
 </template>
+
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
 
+// ============================
+// Reactive contact object
+// ============================
 const contact = ref({
-    name : "", 
-    email : "", 
-    phone : "", 
-    designation : "", 
+  name: "",
+  email: "",
+  phone: "",
+  designation: "",
 });
 
+// Toast notification
 const toast = useToast();
 
+// ============================
+// Get JWT header for protected routes
+// ============================
+const getAuthHeader = () => {
+  const token = localStorage.getItem('token');
+  if (!token) return {};
+  return { Authorization: `Bearer ${token}` };
+};
 
-const saveContact= async()=>{
-    if(!contact.value.name || !contact.value.email || !contact.value.phone || !contact.value.designation ){
-        toast.error('All Fields are required');
+// ============================
+// Submit handler
+// ============================
+const saveContact = async () => {
+  // Validate form
+  if (!contact.value.name || !contact.value.email || !contact.value.phone || !contact.value.designation) {
+    toast.error('All fields are required');
+    return;
+  }
+
+  try {
+    const apiURL = 'http://localhost:8000/api/contacts';
+    const response = await axios.post(apiURL, contact.value, { headers: getAuthHeader() });
+
+    if (response.status === 200 || response.status === 201) {
+      toast.success('Contact added successfully!');
+      // Reset form
+      contact.value = { name: "", email: "", phone: "", designation: "" };
     }
-
-    try {
-        const apiURL = 'http://localhost:8000/api/contacts';
-        const response = await axios.post(apiURL, contact.value);
-        if(response.status==200){
-            toast.success('Contact added successfully!');
-            contact.value.name = '';
-            contact.value.email = '';
-            contact.value.phone = '';
-            contact.value.designation = '' ;
-        }
-    } catch (error) {
-        toast.error(`Failed to add contact due to:
-    ${error}`);
-    }
-}
-
+  } catch (error) {
+    console.error(error);
+    toast.error(`Failed to add contact: ${error.response?.data?.error || error.message}`);
+  }
+};
 </script>
+
 <style lang="css">
-.main{
-    margin-top: 3rem;
+/* Container with shadow and rounded corners */
+.main {
+  margin-top: 3rem;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
-.form-group{
-    margin-bottom: 1rem;
+/* Heading styling */
+.heading {
+  text-align: center;
+  font-weight: 600;
 }
-.label{
-    font-size: medium;
-    margin-left: 0.5rem;
+
+/* Form fields */
+.form-group {
+  margin-bottom: 1rem;
 }
-.heading{
-    text-align: center;
+.label {
+  font-size: medium;
+  margin-bottom: 0.25rem;
+  display: block;
 }
-    
+
+/* Submit button hover effect */
+.submit-btn {
+  transition: all 0.2s;
+}
+.submit-btn:hover {
+  background-color: #495057;
+}
 </style>

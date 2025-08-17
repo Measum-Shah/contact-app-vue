@@ -24,8 +24,10 @@ import errorHandler from './middleware/errorHandler.js';
 app.use(errorHandler);
 
 // routes
+import authRoutes from './routes/authRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 app.use('/api/contacts', contactRoutes);
+app.use('/api/auth', authRoutes);
 
 // db connection
 connectDB();
