@@ -13,7 +13,11 @@ dotenv.config(
 );
 
 // cors setting
-app.use(cors())
+app.use(cors({
+  origin: "https://savecontactt.netlify.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 // middleware built-in
 app.use(express.json());

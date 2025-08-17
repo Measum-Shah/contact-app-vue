@@ -48,7 +48,7 @@ const handleSignup = async () => {
   }
 
   try {
-    const apiURL = 'http://localhost:8000/api/auth/signup';
+    const apiURL = 'https://contact-app-vue.onrender.com/api/auth/signup';
     const response = await axios.post(apiURL, user.value);
     if (response.status === 201) {
       toast.success('Signup successful! Please login.');
