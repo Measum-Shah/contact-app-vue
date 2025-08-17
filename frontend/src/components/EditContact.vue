@@ -101,7 +101,7 @@ const saveContact = async () => {
   }
 
   try {
-    const apiURL = 'http://localhost:8000/api/contacts';
+    const apiURL = 'https://contact-app-vue.onrender.com/api/contacts';
     const response = await axios.post(apiURL, contact.value, { headers: getAuthHeader() });
 
     if (response.status === 200 || response.status === 201) {

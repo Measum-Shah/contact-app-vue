@@ -77,7 +77,7 @@ const contacts = ref([]);
 const loading = ref(true);
 const searchQuery = ref('');
 const toast = useToast();
-const apiURL = 'http://localhost:8000/api/contacts';
+const apiURL = 'https://contact-app-vue.onrender.com/api/contacts';
 
 // ============================
 // Helper: Get JWT token for Authorization header

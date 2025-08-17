@@ -81,7 +81,7 @@ const handleLogin = async () => {
   }
 
   try {
-    const apiURL = 'http://localhost:8000/api/auth/login';
+    const apiURL = 'https://contact-app-vue.onrender.com/api/auth/login';
     const response = await axios.post(apiURL, credentials.value);
     if (response.data.token) {
       localStorage.setItem('token', response.data.token);
